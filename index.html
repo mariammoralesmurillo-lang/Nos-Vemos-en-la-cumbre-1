@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="es-CR"><head><meta charset="utf-8">
+<title>Tarjetas y mapas · Nos vemos en la cumbre</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Verdana,Geneva,sans-serif;background:#E8E4DC;padding:20px;color:#1C2024}
+.panel{max-width:860px;margin:0 auto 24px;background:#fff;padding:24px;border:2px solid #C4BEB2;border-radius:8px}
+h1{font-size:24px;margin-bottom:10px}
+.panel p{font-size:14px;line-height:1.55;margin-bottom:10px}
+.panel ul{margin:0 0 10px 20px;font-size:14px;line-height:1.6}
+label{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:5px}
+input{font-size:18px;padding:10px;border:2px solid #1C2024;width:120px;margin-right:12px;font-family:inherit}
+button{font-weight:700;font-size:15px;padding:12px 20px;background:#1F4D33;color:#fff;border:none;
+  border-radius:6px;cursor:pointer;margin-right:8px}
+button.alt{background:#5C3819}
+
+/* ---------- TARJETAS DE ROL ---------- */
+.hoja{display:grid;grid-template-columns:1fr 1fr;gap:0}
+.t{border:1px dashed #9A9384;height:132mm;display:flex;flex-direction:column;
+  background:#fff;page-break-inside:avoid;break-inside:avoid;overflow:hidden;position:relative}
+/* franja de cielo con cordillera, como en las láminas */
+.t .cielo{height:26mm;position:relative;z-index:1;background:#BFE6F7;overflow:hidden;flex:0 0 auto}
+.t .cielo svg{display:block;width:100%;height:100%}
+.t .cuerpo{padding:0 11mm 11mm;display:flex;flex-direction:column;flex:1;min-height:0}
+/* rótulo de madera con placa circular */
+.t .rotulo{position:relative;z-index:2;display:flex;align-items:center;gap:4mm;background:#6E4420;border:2.5pt solid #4A2C14;
+  border-radius:3mm;padding:3.5mm 5mm;margin:-9mm 0 5mm;box-shadow:0 2mm 0 #4A2C14}
+.t .rotulo .placa{width:17mm;height:17mm;border-radius:50%;background:#fff;border:2.5pt solid #4A2C14;
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto;
+  font-size:21pt;font-weight:700;line-height:1;color:#6E4420}
+.t .rotulo .tx{min-width:0}
+.t .cab{font-size:9.5pt;font-weight:700;letter-spacing:.14em;color:#F2D9B4}
+.t .rn{font-size:17.5pt;font-weight:700;line-height:1.08;color:#fff;margin-top:1mm;word-break:break-word}
+.t .rd{font-size:12pt;line-height:1.42;margin-bottom:4mm}
+.t .rt{font-size:11.5pt;line-height:1.4;border-top:2.5pt solid #1C2024;padding-top:3mm;margin-top:auto}
+.t .rt b{display:block;font-size:9.5pt;letter-spacing:.12em;text-transform:uppercase;color:#6E4420;margin-bottom:1.5mm}
+.t.baq .rotulo{background:#9A6B12}
+.t.baq .cuerpo{background:#FFF8E8}
+.t.baq .aviso{font-size:11.5pt;font-weight:700;background:#CE4436;color:#fff;padding:2.5mm 3.5mm;
+  border-radius:2mm;margin-bottom:4mm}
+
+/* ---------- MAPA DEL BAQUEANO ---------- */
+.mapa{border:3pt solid #1C2024;padding:12mm;page-break-after:always;break-after:page;background:#FFFDF7}
+.mapa .cielo{position:relative;z-index:1;height:30mm;background:#BFE6F7;border-radius:3mm;overflow:hidden;margin-bottom:-12mm}
+.mapa .cielo svg{display:block;width:100%;height:100%}
+.mapa .cab{position:relative;z-index:2;display:flex;align-items:center;gap:5mm;background:#6E4420;border:2.5pt solid #4A2C14;
+  border-radius:3mm;padding:4mm 6mm;position:relative;box-shadow:0 2mm 0 #4A2C14;margin-bottom:6mm}
+.mapa .cab .placa{width:18mm;height:18mm;border-radius:50%;background:#fff;border:2.5pt solid #4A2C14;
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto;font-size:11pt;font-weight:700;color:#6E4420;text-align:center;line-height:1.1}
+.mapa h2{font-size:21pt;margin-bottom:0;color:#fff}
+.mapa .sub{font-size:10.5pt;letter-spacing:.12em;text-transform:uppercase;color:#F2D9B4;font-weight:700}
+.mapa .int{font-size:12pt;line-height:1.5;background:#1F4D33;color:#fff;padding:4mm;border-radius:4px;margin-bottom:5mm}
+.tr{border-top:2pt solid #C4BEB2;padding:4mm 0}
+.tr .h{font-size:10pt;font-weight:700;letter-spacing:.1em;color:#6E4420}
+.tr .n{font-size:15pt;font-weight:700;margin:1mm 0 2mm}
+.tr .p{font-size:12pt;line-height:1.45;background:#FFF2CE;padding:3.5mm 4mm;border-left:4pt solid #C9A245}
+.tally{border:2pt solid #1C2024;padding:4mm;margin-top:6mm;border-radius:4px}
+.tally .h{font-size:10pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;margin-bottom:3mm}
+.tally .row{display:flex;gap:8px;font-size:11.5pt;padding:2.5mm 0;border-bottom:1px dotted #C4BEB2}
+.tally .row span:first-child{flex:1}
+.tally .box{width:60px;border-bottom:1.5pt solid #1C2024}
+
+/* ---------- HOJA DE EQUIPO ---------- */
+.heq{border:3pt solid #1C2024;padding:12mm;page-break-after:always;break-after:page;background:#fff}
+.heq h2{font-size:22pt;margin-bottom:4mm}
+.heq .lin{border-bottom:1.5pt solid #9A9384;height:11mm}
+.heq .cmp{font-size:12pt;font-weight:700;margin:5mm 0 2mm}
+
+@media print{
+  body{background:#fff;padding:0}
+  .panel{display:none}
+  .t{border:1px dashed #BBB}
+  @page{size:A4;margin:6mm}
+}
+</style></head><body>
+
+<div class="panel">
+  <h1>Tarjetas y mapas para imprimir</h1>
+  <p><strong>Tarjetas de rol:</strong> una por participante, 4 por hoja A4. Al repartirlas debajo de las sillas,
+     nunca deje dos tarjetas del mismo equipo en sillas contiguas: la idea es que la gente tenga que levantarse y buscarse.</p>
+  <p><strong>Mapa del Baqueano:</strong> uno por equipo, en la mesa de entrada. Es la única fuente de las pistas del terreno.</p>
+  <p><strong>Hoja de equipo:</strong> una por equipo, para el Cargador.</p>
+  <ul>
+    <li>100 personas → 13 equipos · 200 personas → 25 equipos</li>
+    <li>Imprima en blanco y negro solo si no hay opción: el color distingue al Baqueano.</li>
+    <li>Tamaños pensados para leerse sin lentes en un salón con luz media.</li>
+  </ul>
+  <label for="nc">Cuántos equipos</label>
+  <input id="nc" type="number" value="13" min="1" max="30">
+  <div style="margin-top:14px">
+    <button onclick="genTarjetas()">Tarjetas de rol</button>
+    <button class="alt" onclick="genMapas()">Mapas del Baqueano</button>
+    <button class="alt" onclick="genHojas()">Hojas de equipo</button>
+    <button onclick="window.print()" style="background:#B8352A">Imprimir</button>
+  </div>
+</div>
+
+<div id="out"></div>
+
+<script>
+var CIELO='<svg viewBox="0 0 400 100" preserveAspectRatio="none">'+
+ '<rect width="400" height="100" fill="#BFE6F7"/>'+
+ '<ellipse cx="70" cy="26" rx="34" ry="11" fill="#fff"/><ellipse cx="96" cy="22" rx="24" ry="9" fill="#fff"/>'+
+ '<ellipse cx="330" cy="30" rx="30" ry="10" fill="#fff" opacity=".9"/>'+
+ '<path d="M0 100 L0 62 L62 36 L124 60 L186 28 L250 58 L312 32 L374 58 L400 44 L400 100 Z" fill="#8FB9C9"/>'+
+ '<path d="M0 100 L0 78 L80 58 L164 80 L240 54 L316 78 L400 62 L400 100 Z" fill="#7B8F6A"/>'+
+ '<path d="M186 28 L206 52 L166 52 Z" fill="#E6EDF2"/>'+
+ '<rect y="86" width="400" height="14" fill="#2E6B3C"/>'+
+ '<g fill="#1F4D33"><path d="M24 88 L36 62 L48 88 Z"/><path d="M352 88 L364 64 L376 88 Z"/></g></svg>';
+
+var ROLES=[
+ {n:"Baqueano/a",d:"Usted conoce el terreno. No necesita el teléfono: tiene el mapa de papel, y ahí está la información que nadie más del equipo puede ver.",t:"En cada tramo, abra el mapa y léale a su equipo la pista del terreno. Sin usted no pueden resolver el reto."},
+ {n:"Capitán/a",d:"El equipo va amarrado por una sola cuerda. Si uno se queda, se quedan todos.",t:"Asegúrese de que las ocho personas hablen al menos una vez por tramo. Si alguien no ha hablado, déle el turno."},
+ {n:"Cronometrista",d:"En la montaña el tiempo no se negocia. Se sube con luz o no se sube.",t:"Avise en voz alta cuando queden dos minutos de cada reto. Corte aunque no hayan terminado."},
+ {n:"Vocero/a",d:"Lo que el equipo piensa, lo dice su voz. Y lo dice en treinta segundos.",t:"Cuando se pida en plenaria, habla usted. Nunca más de treinta segundos."},
+ {n:"Cargador/a",d:"Lo que no se anota, se pierde en la bajada.",t:"Escriba en la hoja de equipo las decisiones y las frases que valga la pena guardar."},
+ {n:"Vigía",d:"Usted mira lo que los demás no ven porque están ocupados subiendo.",t:"Observe cómo se comunican. Al final de cada tramo diga una cosa que notó. Solo lo que vio, sin juzgar."},
+ {n:"Enlace",d:"Ningún equipo sube solo. Hay otros en la montaña.",t:"Cuando se indique, busque al equipo vecino e intercambie una idea. Traiga algo de vuelta."},
+ {n:"Aliento",d:"En el tramo duro todos quieren devolverse. Alguien tiene que decir que falta poco.",t:"Cuando el equipo se atore, su trabajo es que sigan. Con humor si hace falta."}
+];
+
+var PISTAS=[
+ {t:"San Gerardo de Rivas — La mochila",a:"1 350 m",
+  p:"La palabra que más pesa no es la más fea: es la que más se repite. Si dos personas dicen la misma, esa va."},
+ {t:"Monte sin Fe — Los tres caminos",a:"2 800 m",
+  p:"En la versión pasiva nadie mira a los ojos. En la agresiva se señala con el dedo. En la asertiva las manos quedan abiertas. Dígaselo a su equipo antes de que actúen."},
+ {t:"Cuesta de los Arrepentidos — Decir que no",a:"3 200 m",
+  p:"Las tres partes del no son: reconocer, negar con razón, y ofrecer la ruta correcta. La que casi todos olvidan es la tercera. Vigile esa."},
+ {t:"Refugio Crestones — La retroalimentación",a:"3 400 m",
+  p:"Si la frase lleva «siempre», «nunca», o cualquier adjetivo sobre la persona, es juicio. Márquela y pida que la digan otra vez."},
+ {t:"Cima del Chirripó — La asamblea",a:"3 820 m",
+  p:"Doce palabras exactas. Cuéntelas en voz alta con su equipo. Los artículos cuentan."}
+];
+
+function nEq(){var n=parseInt(document.getElementById('nc').value,10);return (!n||n<1)?13:Math.min(n,30)}
+
+function genTarjetas(){
+  var n=nEq(),h='',c,r;
+  for(c=1;c<=n;c++){
+    for(r=0;r<8;r++){
+      var R=ROLES[r];
+      h+='<div class="t'+(r===0?' baq':'')+'">'+
+        '<div class="cielo">'+CIELO+'</div>'+
+        '<div class="cuerpo">'+
+        '<div class="rotulo"><div class="placa">'+(c<10?'0':'')+c+'</div>'+
+        '<div class="tx"><div class="cab">EQUIPO · ROL '+(r+1)+'</div>'+
+        '<div class="rn">'+R.n+'</div></div></div>'+
+        (r===0?'<div class="aviso">Recoja su mapa de papel en la mesa de entrada</div>':'')+
+        '<div class="rd">'+R.d+'</div>'+
+        '<div class="rt"><b>Su trabajo</b>'+R.t+'</div></div></div>';
+    }
+  }
+  document.getElementById('out').innerHTML='<div class="hoja">'+h+'</div>';
+}
+
+function genMapas(){
+  var n=nEq(),h='',c,i;
+  for(c=1;c<=n;c++){
+    var tr='';
+    for(i=0;i<PISTAS.length;i++){
+      tr+='<div class="tr"><div class="h">TRAMO '+(i+1)+' · '+PISTAS[i].a+'</div>'+
+          '<div class="n">'+PISTAS[i].t+'</div><div class="p"><strong>Pista del terreno:</strong> '+PISTAS[i].p+'</div></div>';
+    }
+    var rows='';
+    for(i=0;i<PISTAS.length;i++){rows+='<div class="row"><span>Tramo '+(i+1)+'</span><span class="box"></span></div>'}
+    h+='<div class="mapa"><div class="cielo">'+CIELO+'</div>'+
+       '<div class="cab"><div class="placa">EQUIPO<br>'+(c<10?'0':'')+c+'</div><div>'+
+       '<div class="sub">Cerro Chirripó · 3 820 m</div><h2>Mapa del Baqueano</h2></div></div>'+
+       '<div class="int">Esta hoja no está en el teléfono de nadie. En cada tramo, lea la pista en voz alta a su equipo cuando se atoren, no antes.</div>'+
+       tr+'<div class="tally"><div class="h">Metros ganados por tramo</div>'+rows+'</div></div>';
+  }
+  document.getElementById('out').innerHTML=h;
+}
+
+function genHojas(){
+  var n=nEq(),h='',c,i;
+  for(c=1;c<=n;c++){
+    var cuerpo='';
+    for(i=0;i<PISTAS.length;i++){
+      cuerpo+='<div class="cmp">Tramo '+(i+1)+' · '+PISTAS[i].t+'</div>'+
+              '<div class="lin"></div><div class="lin"></div>';
+    }
+    h+='<div class="heq"><h2>Hoja de equipo '+(c<10?'0':'')+c+'</h2>'+
+       '<div class="cmp">Nombre que eligió el equipo</div><div class="lin"></div>'+
+       cuerpo+'</div>';
+  }
+  document.getElementById('out').innerHTML=h;
+}
+
+genTarjetas();
+</script></body></html>
